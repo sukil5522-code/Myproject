@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sukil R — Cosmic Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Raleway:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --void: #03010a;
+  --deep: #07051a;
+  --nebula1: #0d0a2e;
+  --nebula2: #12082a;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(180,140,255,0.15);
+  --star: #e8e0ff;
+  --muted: #8878aa;
+  --accent: #b490ff;
+  --accent2: #7fd4ff;
+  --accent3: #ff7eb3;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Raleway',sans-serif;background:var(--void);color:var(--star);overflow-x:hidden;line-height:1.7;cursor:none;}
+
+/* STARFIELD */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.nebula-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%,rgba(80,30,160,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 70%,rgba(20,60,120,0.2) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 10%,rgba(160,50,100,0.1) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 90% 20%,rgba(30,100,180,0.12) 0%,transparent 60%);
+}
+
+/* CURSOR */
+#cursor-core{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 8px 3px var(--accent),0 0 20px 6px rgba(180,144,255,0.4);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.06s ease,box-shadow 0.2s;}
+#cursor-halo{width:40px;height:40px;border-radius:50%;border:1px solid rgba(180,144,255,0.5);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s,border-color 0.3s;}
+#comet-trail{position:fixed;inset:0;pointer-events:none;z-index:9997;overflow:hidden;}
+.comet-spark{position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;animation:sparkFade 0.8s ease forwards;}
+@keyframes sparkFade{0%{opacity:0.9;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-50%) scale(0.1);}}
+body.on-hover #cursor-core{transform:translate(-50%,-50%) scale(2.2);box-shadow:0 0 16px 6px var(--accent3),0 0 40px 12px rgba(255,126,179,0.3);}
+body.on-hover #cursor-halo{width:64px;height:64px;border-color:rgba(255,126,179,0.5);}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:500;padding:18px 64px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,1,10,0.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(180,144,255,0.1);}
+.nav-logo{font-family:'Cinzel',serif;font-size:20px;font-weight:900;letter-spacing:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.35s ease;}
+.nav-links a:hover{color:var(--accent);}
+.nav-links a:hover::after{width:100%;}
+
+/* SECTIONS */
+section{padding:110px 64px;position:relative;z-index:2;}
+.section-tag{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.section-tag::before{content:'✦';font-size:10px;}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(32px,4.5vw,58px);font-weight:900;letter-spacing:-1px;line-height:1.05;margin-bottom:56px;}
+.glow-word{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(180,144,255,0.4));}
+.cosmos-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(180,144,255,0.3),rgba(127,212,255,0.3),transparent);position:relative;z-index:2;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:130px 64px 80px;overflow:hidden;}
+.hero-content{position:relative;z-index:3;max-width:760px;}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);background:rgba(127,212,255,0.07);border:1px solid rgba(127,212,255,0.2);padding:8px 20px;margin-bottom:28px;opacity:0;animation:riseUp 0.9s 0.2s ease forwards;}
+.hero-badge::before{content:'●';font-size:7px;color:#7fff7f;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hero-name{font-family:'Cinzel',serif;font-size:clamp(62px,9.5vw,130px);font-weight:900;line-height:0.88;letter-spacing:-2px;opacity:0;animation:riseUp 0.9s 0.4s ease forwards;}
+.hero-name .line1{color:var(--star);display:block;}
+.hero-name .line2{display:block;background:linear-gradient(135deg,var(--accent) 30%,var(--accent2) 70%,var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px rgba(180,144,255,0.5));}
+.hero-sub{font-size:16px;color:var(--muted);margin-top:28px;max-width:500px;line-height:1.8;opacity:0;animation:riseUp 0.9s 0.6s ease forwards;}
+.hero-cta{margin-top:48px;display:flex;gap:18px;flex-wrap:wrap;opacity:0;animation:riseUp 0.9s 0.8s ease forwards;}
+.btn-cosmic{padding:14px 38px;background:linear-gradient(135deg,var(--accent),#8860e0);color:#fff;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;border-radius:2px;box-shadow:0 0 20px rgba(180,144,255,0.25);transition:transform 0.25s,box-shadow 0.25s;display:inline-block;}
+.btn-cosmic:hover{transform:translateY(-3px);box-shadow:0 8px 36px rgba(180,144,255,0.45);}
+.btn-ghost{padding:14px 38px;background:transparent;color:var(--star);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(180,144,255,0.3);border-radius:2px;transition:border-color 0.25s,color 0.25s,box-shadow 0.25s;display:inline-block;}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 16px rgba(127,212,255,0.15);}
+@keyframes riseUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+
+/* ORB AVATAR */
+.hero-orb{position:absolute;right:64px;top:50%;transform:translateY(-50%);opacity:0;animation:riseUp 1s 1s ease forwards;z-index:3;}
+.orb-wrap{width:340px;height:340px;position:relative;display:flex;align-items:center;justify-content:center;}
+.orb-planet{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c0a8ff,#8060d0 50%,#3020a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:80px;font-weight:900;position:relative;z-index:2;box-shadow:0 0 60px rgba(140,100,255,0.3),0 0 120px rgba(100,60,200,0.15),inset 0 0 40px rgba(0,0,0,0.5);}
+/* Fake planet sphere using a div trick */
+.planet-sphere{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#5040b0,#1a0a40 60%,#050210);box-shadow:inset -20px -20px 60px rgba(0,0,0,0.7),inset 15px 15px 40px rgba(180,144,255,0.15),0 0 60px rgba(140,100,255,0.25),0 0 120px rgba(100,60,200,0.15);position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
+.planet-letter{font-family:'Cinzel',serif;font-size:80px;font-weight:900;background:radial-gradient(circle at 35% 30%,#c0a8ff,#8060d0 50%,#3020a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.orb-ring{position:absolute;border-radius:50%;border:1px solid;animation:orbitSpin linear infinite;}
+.orb-ring:nth-child(1){width:270px;height:270px;border-color:rgba(180,144,255,0.2);animation-duration:18s;}
+.orb-ring:nth-child(2){width:310px;height:310px;border-color:rgba(127,212,255,0.12);border-style:dashed;animation-duration:28s;animation-direction:reverse;}
+.orb-ring:nth-child(3){width:340px;height:340px;border-color:rgba(255,126,179,0.07);border-style:dotted;animation-duration:40s;}
+.orb-ring:nth-child(1)::after{content:'';position:absolute;top:-4px;left:50%;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);transform:translateX(-50%);}
+.orb-ring:nth-child(2)::after{content:'';position:absolute;bottom:-3px;left:30%;width:5px;height:5px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);}
+@keyframes orbitSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.orb-stat{position:absolute;background:rgba(255,255,255,0.04);border:1px solid rgba(180,144,255,0.2);backdrop-filter:blur(12px);padding:10px 18px;animation:floatCosmic 5s ease-in-out infinite;}
+.orb-stat:nth-of-type(4){top:8px;right:-8px;animation-delay:0s;}
+.orb-stat:nth-of-type(5){bottom:20px;left:-16px;animation-delay:2s;}
+.orb-num{font-family:'Cinzel',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.orb-lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+@keyframes floatCosmic{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-12px) rotate(1deg);}}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,var(--void) 0%,var(--deep) 100%);}
+.about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:start;}
+.about-text p{color:var(--muted);font-size:15.5px;line-height:1.9;margin-bottom:18px;}
+.about-text strong{color:var(--star);font-weight:600;}
+.about-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:34px;}
+.meta-item{border-left:2px solid rgba(180,144,255,0.25);padding:4px 0 4px 14px;}
+.meta-key{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);}
+.meta-val{font-size:13px;color:var(--star);margin-top:3px;}
+.about-cards{display:flex;flex-direction:column;gap:16px;}
+.a-card{background:var(--card);border:1px solid var(--card-border);padding:22px 26px;border-radius:4px;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
+.a-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2));opacity:0;transition:opacity 0.3s;}
+.a-card:hover{transform:translateX(8px);box-shadow:0 8px 32px rgba(180,144,255,0.1);}
+.a-card:hover::before{opacity:1;}
+.a-card-icon{font-size:22px;margin-bottom:8px;}
+.a-card h4{font-size:14px;font-weight:600;color:var(--star);margin-bottom:5px;}
+.a-card p{font-size:12.5px;color:var(--muted);}
+
+/* EXPERIENCE */
+#experience{background:var(--nebula1);}
+.timeline{padding-left:48px;position:relative;}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(180,144,255,0.4) 20%,rgba(127,212,255,0.4) 80%,transparent);}
+.t-item{position:relative;margin-bottom:68px;}
+.t-star{position:absolute;left:-46px;top:4px;width:14px;height:14px;background:radial-gradient(circle,#fff 10%,var(--accent) 50%,transparent 75%);border-radius:50%;box-shadow:0 0 8px 3px rgba(180,144,255,0.5),0 0 20px 6px rgba(180,144,255,0.2);animation:starPulse 3s ease-in-out infinite;}
+@keyframes starPulse{0%,100%{box-shadow:0 0 8px 3px rgba(180,144,255,0.5),0 0 20px 6px rgba(180,144,255,0.2);}50%{box-shadow:0 0 14px 5px rgba(180,144,255,0.8),0 0 36px 10px rgba(180,144,255,0.35);}}
+.t-date{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;}
+.t-badge{display:inline-block;background:rgba(180,144,255,0.1);border:1px solid rgba(180,144,255,0.2);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 12px;margin-bottom:12px;border-radius:2px;}
+.t-role{font-family:'Cinzel',serif;font-size:24px;font-weight:700;color:var(--star);margin-bottom:4px;}
+.t-company{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.t-list{list-style:none;}
+.t-list li{font-size:14px;color:var(--muted);padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;gap:12px;align-items:flex-start;}
+.t-list li::before{content:'◆';font-size:7px;color:var(--accent);flex-shrink:0;margin-top:5px;}
+
+/* SKILLS */
+#skills{background:linear-gradient(180deg,var(--nebula1) 0%,var(--void) 100%);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;}
+.sk-card{background:var(--card);border:1px solid var(--card-border);padding:26px;border-radius:4px;position:relative;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;}
+.sk-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(180,144,255,0.08),transparent 70%);opacity:0;transition:opacity 0.3s;}
+.sk-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.4),0 0 40px rgba(180,144,255,0.08);}
+.sk-card:hover::after{opacity:1;}
+.sk-icon{font-size:26px;margin-bottom:12px;display:block;}
+.sk-name{font-weight:600;font-size:14.5px;color:var(--star);margin-bottom:6px;}
+.sk-desc{font-size:12px;color:var(--muted);line-height:1.65;}
+.sk-bar{height:2px;background:rgba(255,255,255,0.06);margin-top:18px;border-radius:2px;overflow:hidden;}
+.sk-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 8px rgba(180,144,255,0.5);transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+
+/* EDUCATION */
+#education{background:var(--void);}
+.edu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px;}
+.edu-card{background:var(--card);border:1px solid var(--card-border);padding:30px;border-radius:4px;position:relative;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;}
+.edu-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 40px rgba(127,212,255,0.07);}
+.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));}
+.edu-year{font-family:'Share Tech Mono',monospace;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px;}
+.edu-degree{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:var(--star);margin-bottom:8px;line-height:1.3;}
+.edu-school{font-size:12.5px;color:var(--muted);}
+.edu-loc{font-size:11.5px;color:var(--muted);margin-top:8px;opacity:0.7;}
+.edu-glyph{position:absolute;bottom:18px;right:20px;font-size:44px;opacity:0.07;}
+.lang-section{margin-top:72px;}
+.lang-pills{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;}
+.lang-pill{background:var(--card);border:1px solid var(--card-border);padding:10px 26px;border-radius:30px;font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:1px;display:flex;align-items:center;gap:10px;}
+.lang-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));}
+
+/* HIGHLIGHTS */
+#extras{background:var(--deep);}
+.hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.hl-card{background:var(--card);border:1px solid var(--card-border);padding:32px 28px;border-radius:4px;text-align:center;position:relative;overflow:hidden;transition:transform 0.3s,border-color 0.3s;}
+.hl-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 100%,rgba(180,144,255,0.07),transparent 60%);}
+.hl-card:hover{transform:scale(1.03);border-color:rgba(180,144,255,0.4);}
+.hl-num{font-family:'Cinzel',serif;font-size:52px;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(180,144,255,0.3));margin-bottom:10px;}
+.hl-label{font-size:12.5px;color:var(--muted);line-height:1.5;}
+
+/* CONTACT */
+#contact{background:var(--void);text-align:center;}
+.contact-wrap{max-width:620px;margin:0 auto;}
+.contact-wrap p{color:var(--muted);font-size:15.5px;line-height:1.9;margin-bottom:48px;}
+.contact-items{display:flex;flex-direction:column;gap:14px;align-items:center;}
+.c-link{display:flex;align-items:center;gap:18px;width:100%;max-width:440px;background:var(--card);border:1px solid var(--card-border);padding:16px 24px;text-decoration:none;color:var(--star);transition:border-color 0.3s,transform 0.2s,box-shadow 0.3s;border-radius:4px;}
+.c-link:hover{border-color:var(--accent);transform:translateX(6px);box-shadow:0 0 24px rgba(180,144,255,0.1);}
+.c-icon{font-size:20px;}
+.c-tag{font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:2px;}
+.c-val{font-size:13.5px;color:var(--star);}
+
+/* FOOTER */
+footer{background:var(--void);border-top:1px solid rgba(180,144,255,0.1);padding:30px 64px;display:flex;align-items:center;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;position:relative;z-index:2;}
+.footer-glow{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity 0.75s ease,transform 0.75s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  section{padding:80px 28px;}
+  nav{padding:16px 28px;}
+  .nav-links{display:none;}
+  #hero{padding:110px 28px 70px;}
+  .hero-orb{display:none;}
+  .about-grid{grid-template-columns:1fr;gap:40px;}
+  .hl-grid{grid-template-columns:1fr 1fr;}
+  footer{flex-direction:column;gap:10px;text-align:center;padding:24px;}
+}
+@media(max-width:560px){.hl-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="nebula-bg"></div>
+<div id="cursor-core"></div>
+<div id="cursor-halo"></div>
+<div id="comet-trail"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ SUKIL R</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Available for opportunities</div>
+    <h1 class="hero-name">
+      <span class="line1">Sukil.R</span>
+      <!-- <span class="line2">R.</span> -->
+    </h1>
+    <p class="hero-sub">B.Com (Computer Applications) Graduate · Customer Support Professional · Aspiring Finance &amp; Business Analyst</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-cosmic">Contact Me</a>
+      <a href="#experience" class="btn-ghost">View Journey</a>
+    </div>
+  </div>
+  <div class="hero-orb">
+    <div class="orb-wrap">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="planet-sphere"><div class="planet-letter">S</div></div>
+      <div class="orb-stat"><div class="orb-num">n8n</div><div class="orb-lbl">Expert</div></div>
+      <div class="orb-stat"><div class="orb-num">6+</div><div class="orb-lbl">Skills</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-tag">Who I Am</div>
+    <h2 class="section-title">About <span class="glow-word">Me</span></h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I'm <strong>Sukil R</strong>, a detail-oriented <strong>B.Com (Computer Applications)</strong> graduate from Sengunthar Arts and Science College, Tiruchengode. I blend a strong foundation in accounting with practical computer and communication skills.</p>
+      <p>Currently working as a <strong>Customer Support Executive</strong> at Nithra Apps India Pvt Ltd, I've sharpened my CRM handling, problem-solving, and customer relationship skills in a fast-paced environment.</p>
+      <p>I'm driven by growth, precision, and the desire to contribute meaningfully — always eager to learn and adapt to new challenges.</p>
+      <div class="about-meta">
+        <div class="meta-item"><div class="meta-key">Location</div><div class="meta-val">Namakkal, TN</div></div>
+        <div class="meta-item"><div class="meta-key">Education</div><div class="meta-val">B.Com (CA)</div></div>
+        <div class="meta-item"><div class="meta-key">Email</div><div class="meta-val">sksukil94@gmail.com</div></div>
+        <div class="meta-item"><div class="meta-key">Phone</div><div class="meta-val">+91 73394 62370</div></div>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="a-card"><div class="a-card-icon">🌌</div><h4>Goal-Oriented</h4><p>Focused on delivering results with attention to detail and precision in every task.</p></div>
+      <div class="a-card"><div class="a-card-icon">⚡</div><h4>Quick Learner</h4><p>Adapts rapidly to new tools and workflows with minimal ramp-up time.</p></div>
+      <div class="a-card"><div class="a-card-icon">🛸</div><h4>Team Player</h4><p>Collaborative by nature — building trust and positive relationships across teams.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="section-tag">Career Path</div>
+    <h2 class="section-title">Work <span class="glow-word">Experience</span></h2>
+  </div>
+  <div class="timeline reveal">
+    <div class="t-item">
+      <div class="t-star"></div>
+      <div class="t-date">Dec 2025 — Present</div>
+      <div class="t-badge">Full-Time</div>
+      <div class="t-role">Customer Support Executive</div>
+      <div class="t-company">Nithra Apps India Pvt Ltd · Tiruchengode, Namakkal</div>
+      <ul class="t-list">
+        <li>Respond to customer inquiries via phone, email, and chat promptly and professionally.</li>
+        <li>Resolve customer complaints efficiently to achieve high satisfaction and first-call resolution.</li>
+        <li>Provide accurate information about products, services, and company policies.</li>
+        <li>Maintain detailed records of customer interactions in CRM systems.</li>
+        <li>Follow up with customers to ensure complete issue resolution.</li>
+        <li>Build and maintain positive long-term customer relationships.</li>
+        <li>Stay updated with product knowledge, features, and company updates.</li>
+      </ul>
+    </div>
+    <div class="t-item">
+      <div class="t-star" style="animation-delay:1s;"></div>
+      <div class="t-date">May 2024 — Jul 2024</div>
+      <div class="t-badge">Internship</div>
+      <div class="t-role">Inplant Training — Accounting</div>
+      <div class="t-company">Finance Department · Erode</div>
+      <ul class="t-list">
+        <li>Applied Tally ERP 9 skills for accounting operations, data entry, and financial record maintenance.</li>
+        <li>Assisted in the preparation of financial statements and management reports.</li>
+        <li>Handled basic bookkeeping tasks including vouchers, ledgers, and invoices.</li>
+        <li>Supported the finance team in day-to-day accounting and documentation activities.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="section-tag">Capabilities</div>
+    <h2 class="section-title">Skills &amp; <span class="glow-word">Tools</span></h2>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="sk-card"><span class="sk-icon">📊</span><div class="sk-name">MS Excel &amp; Office</div><div class="sk-desc">Data entry, spreadsheets, documentation, and reporting using Microsoft Office Suite.</div><div class="sk-bar"><div class="sk-fill" data-w="85%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">📧</span><div class="sk-name">Email & Chat Support</div><div class="sk-desc">Helping customers by answering questions through email and live chat.</div><div class="sk-bar"><div class="sk-fill" data-w="80%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">💻</span><div class="sk-name">Basic Programming</div><div class="sk-desc">Foundational programming and database management from B.Com (CA) curriculum.</div><div class="sk-bar"><div class="sk-fill" data-w="60%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">🗄️</span><div class="sk-name">CRM Systems</div><div class="sk-desc">Managing and maintaining customer interaction records within CRM platforms.</div><div class="sk-bar"><div class="sk-fill" data-w="75%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">🧮</span><div class="sk-name">Accounting Principles</div><div class="sk-desc">Strong foundation in financial accounting, business management, and commerce.</div><div class="sk-bar"><div class="sk-fill" data-w="82%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">🎧</span><div class="sk-name">Customer Handling</div><div class="sk-desc">Resolving complaints, providing support, and building lasting customer relationships.</div><div class="sk-bar"><div class="sk-fill" data-w="88%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">🔍</span><div class="sk-name">Problem Solving</div><div class="sk-desc">Analytical thinking to identify issues and provide efficient, accurate solutions.</div><div class="sk-bar"><div class="sk-fill" data-w="80%" style="width:0"></div></div></div>
+    <div class="sk-card"><span class="sk-icon">⏱️</span><div class="sk-name">Time Management</div><div class="sk-desc">Effective prioritization and delivery across multiple responsibilities and deadlines.</div><div class="sk-bar"><div class="sk-fill" data-w="78%" style="width:0"></div></div></div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <div class="section-tag">Academic Path</div>
+    <h2 class="section-title">Edu<span class="glow-word">cation</span></h2>
+  </div>
+  <div class="edu-grid reveal">
+    <div class="edu-card"><div class="edu-year">2022 — 2025</div><div class="edu-degree">Bachelor of Commerce<br/>(Computer Applications)</div><div class="edu-school">Sengunthar Arts and Science (Autonomous)</div><div class="edu-loc">📍 Tiruchengode</div><div class="edu-glyph">🎓</div></div>
+    <div class="edu-card"><div class="edu-year">2018 — 2019</div><div class="edu-degree">HSC — Computer Science</div><div class="edu-school">Government Higher Secondary School</div><div class="edu-loc">📍 Pallipalayam</div><div class="edu-glyph">📚</div></div>
+    <div class="edu-card"><div class="edu-year">2017 — 2018</div><div class="edu-degree">SSLC — Secondary School</div><div class="edu-school">Government Higher Secondary School</div><div class="edu-loc">📍 Pallipalayam</div><div class="edu-glyph">🏫</div></div>
+  </div>
+  <div class="lang-section reveal">
+    <div class="section-tag">Communication</div>
+    <h3 style="font-family:'Cinzel',serif;font-size:26px;font-weight:700;margin-bottom:6px;">Languages</h3>
+    <div class="lang-pills">
+      <div class="lang-pill"><div class="lang-dot"></div>Tamil<span style="font-size:10px;color:var(--muted);margin-left:8px;">Native</span></div>
+      <div class="lang-pill"><div class="lang-dot"></div>English<span style="font-size:10px;color:var(--muted);margin-left:8px;">Proficient</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- HIGHLIGHTS -->
+<section id="extras">
+  <div class="reveal">
+    <div class="section-tag">At a Glance</div>
+    <h2 class="section-title">Key <span class="glow-word">Highlights</span></h2>
+  </div>
+  <div class="hl-grid reveal">
+    <div class="hl-card"><div class="hl-num">3+</div><div class="hl-label">Years of Higher Education in Commerce &amp; Technology</div></div>
+    <div class="hl-card"><div class="hl-num">2</div><div class="hl-label">Months of Hands-On Accounting Internship</div></div>
+    <div class="hl-card"><div class="hl-num">6+</div><div class="hl-label">Technical Skills Across Accounting, Office &amp; CRM</div></div>
+    <div class="hl-card"><div class="hl-num">2</div><div class="hl-label">Languages Spoken — Tamil &amp; English</div></div>
+    <div class="hl-card"><div class="hl-num">100%</div><div class="hl-label">Commitment to Customer Satisfaction</div></div>
+    <div class="hl-card"><div class="hl-num">∞</div><div class="hl-label">Willingness to Learn &amp; Grow</div></div>
+  </div>
+</section>
+
+<div class="cosmos-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-tag">Reach Out</div>
+    <h2 class="section-title">Let's <span class="glow-word">Connect</span></h2>
+  </div>
+  <div class="contact-wrap reveal">
+    <p>I'm actively seeking entry-level opportunities in finance, accounting, customer support, or business operations. If you have a role that matches my profile, I'd love to hear from you across the cosmos.</p>
+    <div class="contact-items">
+      <a href="mailto:sksukil94@gmail.com" class="c-link"><div class="c-icon">✉️</div><div><div class="c-tag">Email</div><div class="c-val">sksukil94@gmail.com</div></div></a>
+      <a href="tel:+917339462370" class="c-link"><div class="c-icon">📞</div><div><div class="c-tag">Phone</div><div class="c-val">+91 73394 62370</div></div></a>
+      <a href="https://linkedin.com/in/sukil-sk-254b30276" target="_blank" class="c-link"><div class="c-icon">🔗</div><div><div class="c-tag">LinkedIn</div><div class="c-val">linkedin.com/in/sukil-sk-254b30276</div></div></a>
+      <div class="c-link" style="cursor:default;"><div class="c-icon">📍</div><div><div class="c-tag">Location</div><div class="c-val">Namakkal, Tamil Nadu — 638008</div></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 <span class="footer-glow">Sukil R</span> — All Rights Reserved</div>
+  <div>Somewhere in the <span class="footer-glow">Cosmos</span> ✦</div>
+</footer>
+
+<script>
+/* ═══ STARFIELD CANVAS ═══ */
+const canvas=document.getElementById('starfield');
+const ctx=canvas.getContext('2d');
+let W,H,stars=[],shooters=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<340;i++){stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+0.2,speed:Math.random()*0.004+0.001,phase:Math.random()*Math.PI*2});}
+function spawnShooter(){shooters.push({x:Math.random()*W*0.5+W*0.1,y:Math.random()*H*0.35,len:Math.random()*200+80,spd:Math.random()*7+5,angle:Math.PI/4+(Math.random()-0.5)*0.3,alpha:1});}
+setInterval(spawnShooter,4200);
+let frame=0;
+(function draw(){
+  ctx.clearRect(0,0,W,H);frame++;
+  stars.forEach(s=>{
+    const t=0.4+0.6*Math.sin(frame*s.speed*55+s.phase);
+    ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(210,195,255,${t*0.9})`;ctx.fill();
+  });
+  shooters=shooters.filter(s=>{
+    ctx.save();ctx.globalAlpha=s.alpha;
+    const g=ctx.createLinearGradient(s.x,s.y,s.x-Math.cos(s.angle)*s.len,s.y-Math.sin(s.angle)*s.len);
+    g.addColorStop(0,'rgba(200,180,255,1)');g.addColorStop(1,'rgba(200,180,255,0)');
+    ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.beginPath();
+    ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-Math.cos(s.angle)*s.len,s.y-Math.sin(s.angle)*s.len);
+    ctx.stroke();ctx.restore();
+    s.x+=Math.cos(s.angle)*s.spd;s.y+=Math.sin(s.angle)*s.spd;s.alpha-=0.016;
+    return s.alpha>0;
+  });
+  requestAnimationFrame(draw);
+})();
+
+/* ═══ COMET CURSOR ═══ */
+const core=document.getElementById('cursor-core');
+const halo=document.getElementById('cursor-halo');
+const trailEl=document.getElementById('comet-trail');
+let mx=0,my=0,hx=0,hy=0,lx=0,ly=0;
+const COLS=['#b490ff','#7fd4ff','#ff7eb3','#ffffff','#a8f0ff','#ffd4a0'];
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  core.style.left=mx+'px';core.style.top=my+'px';
+  if(Math.hypot(mx-lx,my-ly)>9){
+    const sp=document.createElement('div');
+    sp.className='comet-spark';
+    const sz=Math.random()*5+2;
+    const col=COLS[Math.floor(Math.random()*COLS.length)];
+    sp.style.cssText=`left:${mx}px;top:${my}px;width:${sz}px;height:${sz}px;background:${col};box-shadow:0 0 6px ${col};animation-duration:${0.5+Math.random()*0.4}s;`;
+    trailEl.appendChild(sp);lx=mx;ly=my;
+    setTimeout(()=>sp.remove(),900);
+  }
+});
+(function loopHalo(){
+  hx+=(mx-hx)*0.1;hy+=(my-hy)*0.1;
+  halo.style.left=hx+'px';halo.style.top=hy+'px';
+  requestAnimationFrame(loopHalo);
+})();
+document.querySelectorAll('a,button,.sk-card,.edu-card,.a-card,.hl-card,.c-link').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('on-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('on-hover'));
+});
+
+/* ═══ SCROLL REVEAL ═══ */
+document.querySelectorAll('.reveal').forEach(el=>{
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:0.08}).observe(el);
+});
+
+/* ═══ SKILL BARS ═══ */
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.querySelectorAll('.sk-fill').forEach(b=>{b.style.width=b.dataset.w;});
+  });
+},{threshold:0.25}).observe(document.getElementById('skills'));
+
+/* ═══ COUNTERS ═══ */
+function countUp(el){
+  const raw=el.textContent;const n=parseInt(raw);if(isNaN(n))return;
+  const suf=raw.slice(String(n).length);let s=null;
+  (function step(ts){if(!s)s=ts;const p=Math.min((ts-s)/1300,1);el.textContent=Math.floor(p*n)+suf;if(p<1)requestAnimationFrame(step);})(performance.now());
+}
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.hl-num').forEach(countUp);});
+},{threshold:0.3}).observe(document.getElementById('extras'));
+</script>
+</body>
+</html>
